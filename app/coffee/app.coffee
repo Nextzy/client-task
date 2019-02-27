@@ -80,7 +80,6 @@ configure = ($routeProvider, $locationProvider, $httpProvider, $provide, $tgEven
             controllerAs: "vm"
             loader: true,
             title: "HOME.PAGE_TITLE",
-            loader: true,
             description: "HOME.PAGE_DESCRIPTION",
             joyride: "dashboard"
         }
@@ -119,6 +118,21 @@ configure = ($routeProvider, $locationProvider, $httpProvider, $provide, $tgEven
             description: "PROJECTS.PAGE_DESCRIPTION",
             loader: true,
             controller: "ProjectsListing",
+            controllerAs: "vm"
+        }
+    )
+
+    # My Planner
+    $routeProvider.when("/planner",
+        {
+            templateUrl: "planner/planner.html",
+            access: {
+                requiresLogin: true
+            },
+            title: "PLANNER.PAGE_TITLE",
+            description: "PLANNER.PAGE_DESCRIPTION",
+            loader: true,
+            controller: "PlannerController",
             controllerAs: "vm"
         }
     )
@@ -949,6 +963,7 @@ modules = [
     "taigaUserStories",
     "taigaTasks",
     "taigaTeam",
+    "taigaPlanner",
     "taigaCalendar",
     "taigaWiki",
     "taigaSearch",

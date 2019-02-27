@@ -50,6 +50,8 @@ urls = {
     "discover": "/discover"
     "discover-search": "/discover/search"
 
+    "planner": "/planner"
+
     "login": "/login"
     "forgot-password": "/forgot-password"
     "change-password": "/change-password/:token"

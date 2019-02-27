@@ -1,0 +1,13 @@
+section.working-task-container
+    header
+        h1.title-bar.working-task-title(translate="PLANNER.MY_TASKS")
+
+    .working-task(ng-if="vm.assignedTo.size")
+        .duty-single(
+            tg-unplan-task="duty"
+            type="working-task"
+            tg-repeat="duty in vm.assignedTo"
+        )
+    .working-task-empty(ng-if="vm.assignedTo != undefined && vm.assignedTo.size === 0")
+        p(translate="HOME.EMPTY_WORKING_ON")
+        include empty.jade

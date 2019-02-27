@@ -58,6 +58,13 @@ nav.navbar(ng-if="vm.isEnabledHeader")
             tg-dropdown-project-list
             active="vm.active == 'projects'"
         )
+        a(
+            href="#",
+            tg-nav="planner",
+            ng-class="{'active': vm.active == 'planner' }"
+            title="{{'PROJECT.NAVIGATION.PLANNER_TITLE' | translate}}",
+        )
+            tg-svg(svg-icon="icon-calendar")
 
         div.topnav-dropdown-wrapper(
             tg-dropdown-notifications

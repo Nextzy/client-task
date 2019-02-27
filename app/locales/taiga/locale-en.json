@@ -426,6 +426,11 @@
     "PAGE_DESCRIPTION": "A list with all your projects, you can reorder or create a new one.",
     "MY_PROJECTS": "My projects"
   },
+  "PLANNER": {
+    "PAGE_TITLE": "Calendar Planner",
+    "PAGE_DESCRIPTION": "Plan your task.", 
+    "MY_TASKS": "My tasks"
+  },
   "ATTACHMENT": {
     "SECTION_NAME": "attachments",
     "TITLE": "{{ fileName }} uploaded on {{ date }}",
@@ -888,6 +893,8 @@
       "CHANGE_PASSWORD": "Change password",
       "DASHBOARD_TITLE": "Dashboard",
       "DISCOVER_TITLE": "Discover trending projects",
+      "PLANNER": "Plan your task",
+      "PLANNER_TITLE": "Planner",
       "DISCOVER": "Discover"
     },
     "LIKE_BUTTON": {
