@@ -107,12 +107,22 @@ nav.menu(
                     tg-svg(svg-icon="icon-meetup")
                     span.helper(translate="PROJECT.SECTION.MEETUP")
 
+            li#nav-calendar
+                a(
+                    tg-nav="project-calendar-home:project=vm.project.get('slug')"
+                    ng-class="{active: vm.active == 'calendar'}"
+                    aria-label="{{'PROJECT.SECTION.CALENDAR' | translate}}"
+                    tabindex="8"
+                )
+                    tg-svg(svg-icon="icon-calendar")
+                    span.helper(translate="PROJECT.SECTION.CALENDAR")
+
             li#nav-admin(ng-if="vm.project.get('i_am_admin')")
                 a(
                     tg-nav="project-admin-home:project=vm.project.get('slug')"
                     ng-class="{active: vm.active == 'admin'}"
                     aria-label="{{'PROJECT.SECTION.ADMIN' | translate}}"
-                    tabindex="8"
+                    tabindex="9"
                 )
                     tg-svg(svg-icon="icon-settings")
                     span.helper(translate="PROJECT.SECTION.ADMIN")

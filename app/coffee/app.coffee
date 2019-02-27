@@ -299,6 +299,15 @@ configure = ($routeProvider, $locationProvider, $httpProvider, $provide, $tgEven
         }
     )
 
+    # Calendar
+    $routeProvider.when("/project/:pslug/calendar",
+        {
+            templateUrl: "calendar/calendar.html",
+            loader: true,
+            section: "calendar"
+        }
+    )
+
     # Issues
     $routeProvider.when("/project/:pslug/issues",
         {
@@ -940,6 +949,7 @@ modules = [
     "taigaUserStories",
     "taigaTasks",
     "taigaTeam",
+    "taigaCalendar",
     "taigaWiki",
     "taigaSearch",
     "taigaAdmin",

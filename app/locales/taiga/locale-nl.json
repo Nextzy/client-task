@@ -864,6 +864,7 @@
             "WIKI": "Wiki",
             "TEAM": "Team",
             "MEETUP": "Meet Up",
+            "CALENDAR": "Calendar",
             "ADMIN": "Admin"
         },
         "NAVIGATION": {

@@ -90,6 +90,9 @@ urls = {
     # Team
     "project-team": "/project/:project/team"
 
+    # Calendar
+    "project-calendar-home": "/project/:project/calendar"
+
     # Admin
     "project-admin-home": "/project/:project/admin/project-profile/details"
     "project-admin-project-profile-details": "/project/:project/admin/project-profile/details"

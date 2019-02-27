@@ -100,6 +100,11 @@ var actions = {
         await common.link($('#nav-team a'));
 
         return common.waitLoader();
+    },
+    calendar: async function() {
+        await common.link($('#nav-calendar a'));
+
+        return common.waitLoader();
     }
 };
 
@@ -150,6 +155,10 @@ var nav = {
     },
     team: function(index) {
         this.actions.push(actions.team.bind(null, index));
+        return this;
+    },
+    calendar: function(index) {
+        this.actions.push(actions.calendar.bind(null, index));
         return this;
     },
     go: function() {
