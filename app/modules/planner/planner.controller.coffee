@@ -19,14 +19,34 @@
 
 class PlannerController
     @.$inject = [
+        "$scope"
         "tgCurrentUserService",
         "$location",
-        "$tgNavUrls"
+        "$tgNavUrls", 
+        "uiCalendarConfig"
     ]
 
-    constructor: (@currentUserService, @location, @navUrls) ->
+    constructor: (@scope, @currentUserService, @location, @navUrls) ->
         if not @currentUserService.getUser()
             @location.path(@navUrls.resolve("planner"))
+        @scope.uiConfig = {
+                calendar: {
+                    height: 700, 
+                    header: {
+                        left: ""
+                        center: "title"
+                        right: ""
+                    }, 
+                    footer: {
+                        right: "today prev,next"
+                    }
+                    handleWindowResize: true,
+                    titleFormat: "D MMM YYYY",
+                    defaultView: "agendaDay", 
+                    allDaySlot: false
+                }
+            }
+    
 
 
 angular.module("taigaPlanner").controller("PlannerController", PlannerController)

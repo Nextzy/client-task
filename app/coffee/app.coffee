@@ -997,7 +997,8 @@ modules = [
     "ngAria",
     "pascalprecht.translate",
     "infinite-scroll",
-    "tgRepeat"
+    "tgRepeat", 
+    "ui.calendar"
 ].concat(pluginsModules)
 
 # Main module definition
