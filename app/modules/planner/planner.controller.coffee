@@ -27,8 +27,9 @@ class PlannerController
     ]
 
     constructor: (@scope, @currentUserService, @location, @navUrls) ->
-        if not @currentUserService.getUser()
+        if not @currentUserService.getUser() 
             @location.path(@navUrls.resolve("planner"))
+        @scope.eventSources = []
         @scope.uiConfig = {
                 calendar: {
                     height: 700, 
@@ -39,11 +40,17 @@ class PlannerController
                     }, 
                     footer: {
                         right: "today prev,next"
-                    }
+                    }, 
+                    eventStartEditable: true,
+                    eventDurationEditable: false,
                     handleWindowResize: true,
                     titleFormat: "D MMM YYYY",
                     defaultView: "agendaDay", 
-                    allDaySlot: false
+                    allDaySlot: false, 
+                    droppable: true
+                    drop: (date) -> 
+                        console.log("Yo " + date.format())
+                        alert("Dropped on " + date.format())
                 }
             }
     

@@ -2,22 +2,27 @@ a.list-itemtype-ticket(
     href="{{ ::vm.duty.get('url') }}"
     title="{{ ::duty.get('subject') }}"
     ng-class="{'blocked': vm.duty.get('is_blocked'), 'blocked-project': vm.duty.getIn(['project', 'blocked_code'])}"
+    ng-drag="true"
+    draggable="true"
 )
     div.list-itemtype-avatar(ng-if="vm.type == 'working-task'")
         img(
             tg-project-logo-small-src="::vm.duty.get('project')"
             title="{{ ::vm.duty.getIn(['project', 'name']) }}"
+            draggable="false"
         )
     div.list-itemtype-avatar(ng-if="vm.type == 'watching'")
         img(
             ng-if="vm.duty.get('assigned_to_extra_info')"
             title="{{ ::vm.duty.get('assigned_to_extra_info').get('full_name_display') }}"
             tg-avatar="vm.duty.get('assigned_to_extra_info')"
+            draggable="false"
         )
         img(
             ng-if="!vm.duty.get('assigned_to_extra_info')"
             src="/#{v}/images/unnamed.png"
             title="{{'ACTIVITY.VALUES.UNASSIGNED' | translate}}"
+            draggable="false"
         )
     div.list-itemtype-ticket-data
         p
