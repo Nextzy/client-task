@@ -35,15 +35,13 @@ UnplanTaskDirective = (navurls, $translate) ->
                     return $translate.instant("COMMON.ISSUE")
 
         el.on "dragstart", (ev) -> 
-            console.log("Duty : " + JSON.stringify(scope.vm.duty))
             ev.target.setAttribute("data-duration", "04:00")
 
     return {
         templateUrl: "planner/unplan-task/unplan-task.html"
         scope: {
             "duty": "=tgUnplanTask",
-            "type": "@", 
-            "duration": "="
+            "type": "@"
         },
         link: link
     }

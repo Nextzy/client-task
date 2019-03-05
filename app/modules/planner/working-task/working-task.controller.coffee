@@ -27,19 +27,23 @@ class WorkingTaskController
         # @.watching = Immutable.Map()
 
     _setAssignedTo: (workInProgress) ->
-        epics = workInProgress.get("assignedTo").get("epics")
-        userStories = workInProgress.get("assignedTo").get("userStories")
+        # epics = workInProgress.get("assignedTo").get("epics")
+        # userStories = workInProgress.get("assignedTo").get("userStories")
         tasks = workInProgress.get("assignedTo").get("tasks")
-        issues = workInProgress.get("assignedTo").get("issues")
+        # issues = workInProgress.get("assignedTo").get("issues")
 
-        @.assignedTo = userStories.concat(tasks).concat(issues)
-        # tasks.forEach((item, index) -> 
-            # console.log(JSON.stringify(item)))
+        # @.assignedTo = userStories.concat(tasks)
+        @.assignedTo = tasks
+        tasks.forEach((item, index) -> 
+            console.log(JSON.stringify(item))
+            console.log("******************")
+        )
         # .sort((a, b) => { return })
         
         if @.assignedTo.size > 0
             @.assignedTo = @.assignedTo.sortBy((elem) -> elem.get("project").get("id")).reverse()
-
+            
+        # console.log(JSON.stringify(@.assignedTo))
     # _setWatching: (workInProgress) ->
     #     epics = workInProgress.get("watching").get("epics")
     #     userStories = workInProgress.get("watching").get("userStories")

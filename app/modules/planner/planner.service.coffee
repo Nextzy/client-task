@@ -123,16 +123,31 @@ class PlannerService extends taiga.Service
             assigned_to: userId
         }
 
+        service = @rs
+
         assignedEpicsPromise = @rs.epics.listInAllProjects(params_epics).then (epics) ->
             assignedTo = assignedTo.set("epics", epics)
 
         assignedUserStoriesPromise = @rs.userstories.listInAllProjects(params_uss).then (userstories) ->
             assignedTo = assignedTo.set("userStories", userstories)
 
-        assignedTasksPromise = @rs.tasks.listInAllProjects(params_tasks).then (tasks) ->
-            assignedTo = assignedTo.set("tasks", tasks)
+        # assignedTasksPromise = @rs.tasks.listInAllProjects(params_tasks).then (tasks) -> 
+        #     assignedTo = assignedTo.set("tasks", tasks)
+
+        resource = @rs
+        assignedTasksPromise = @rs.tasks.listInAllProjects(params_tasks).then (tasks) -> 
+            promises = tasks.map (task) -> 
+                projectId = task.get("project")
+                return getCustomAttributesPromise(projectId, task, resource)
+                    .then (result) -> getManHourFromTaskPromise(result, resource)
+                    .then (result) -> putManHourToTaskPromise(result, tasks)
+            
+            Promise.all(promises).then () =>
+                assignedTo = assignedTo.set("tasks", tasks)
+                console.log("Success Fucking Awesome")
 
         assignedIssuesPromise = @rs.issues.listInAllProjects(params_issues).then (issues) ->
+            console.log('Immutable : ' + Immutable.Iterable.isIterable(issues))
             assignedTo = assignedTo.set("issues", issues)
 
         params_epics = {
@@ -188,5 +203,48 @@ class PlannerService extends taiga.Service
             workInProgress = @._attachProjectInfoToWorkInProgress(workInProgress, projectsById)
 
             return workInProgress
+
+    getCustomAttributesPromise = (projectId, task, resource) -> 
+        return resource.customAttributes.getCustomAttributes(projectId).then (attrs) ->
+            manHourAttr = attrs.data.find (attr) -> attr.name == "man-hour"
+            return { manHourAttr, task }
+
+    getManHourFromTaskPromise = (result, resource) -> 
+        manHourAttr = result.manHourAttr
+        task = result.task
+        if manHourAttr?
+            return resource.customAttributes.getTaskCustomAttributeValues(task.get("id")).then (values) -> 
+                manHourValue = values.data.attributes_values[manHourAttr.id]
+                if manHourValue?
+                    rawHour = parseInt(manHourValue)
+                    rawMinute = manHourValue - rawHour
+                    manHour = pad(rawHour, 2) + ":" + pad(rawMinute * 60, 2)
+                    return { manHour, task }
+                return { "manHour" : undefined, task }
+        else 
+            new Promise((resolve, reject) => 
+                resolve({ "manHour" : undefined, task })
+            )
+
+    putManHourToTaskPromise = (result, tasks) ->
+        new Promise((resolve, reject) => 
+            manHour = result.manHour
+            task = result.task
+            task.set('blocked_note', 'Akexorcist')
+            # task["manHour"] = manHour
+            # index = tasks.findIndex(item => item.id == task.id)
+            # tasks = tasks.update(tasks.findIndex((item) ->
+            #     return item.get("id") == task.id; 
+            # ), (item) ->
+            #     return item.set("manHour", manHour)
+            # )
+
+            # tasks = tasks.setIn([index, "manHour"], manHour)
+            resolve(task)
+            # actualTasks.push(task)
+        )
+
+    pad = (num, size) -> 
+        return ("0000" + num).slice(-size)
 
 angular.module("taigaPlanner").service("tgPlannerService", PlannerService)
