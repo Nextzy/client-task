@@ -17,7 +17,12 @@
                 ng-if="vm.item.getIn(['model', 'total_points'])"
             ) {{"COMMON.FIELDS.POINTS" | translate}} {{vm.item.getIn(['model', 'total_points'])}}
 
-    div {{vm.item.get('man_hour')}}
+    div.man-hour(
+        ng-if="vm.getManHour()"
+    ) {{vm.getManHour()}} Hr
+    div.empty-man-hour(
+        ng-if="!vm.getManHour()"
+    ) {{"TASKBOARD.EMPTY_MAN_HOUR" | translate}}
 
     .card-statistics
         tg-due-date.statistic.card-due-date(

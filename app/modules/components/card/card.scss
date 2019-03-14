@@ -178,6 +178,14 @@
     .card-estimation.not-estimated {
         font-size: .8125rem;
     }
+    .man-hour {
+        color: $gray-light;
+        margin-top: .3em;
+    }
+    .empty-man-hour {
+        color: $red-light;
+        margin-top: .3em;
+    }
 }
 
 .card-statistics {
