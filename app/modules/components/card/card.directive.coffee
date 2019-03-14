@@ -20,21 +20,10 @@
 module = angular.module("taigaComponents")
 
 cardDirective = () ->
-    toManHour = (value) ->
-        if(value) 
-            rawHour = parseInt(value)
-            rawMinute = value - rawHour
-            return pad(rawHour, 2) + ":" + pad(rawMinute * 60, 2)
-        return undefined
-
-    pad = (num, size) -> 
-        return ("0000" + num).slice(-size)
-
     return {
         link: (scope) ->
-            # scope.vm = {}
             scope.vm.getManHour = () ->
-                return toManHour(scope.vm.item.get("man_hour"))
+                return scope.vm.item.get("man_hour")
 
         controller: "Card",
         controllerAs: "vm",

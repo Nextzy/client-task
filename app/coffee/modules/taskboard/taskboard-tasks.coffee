@@ -158,14 +158,18 @@ class TaskboardTasksService extends taiga.Service
                 usTasks[us.id][status.id] = []
 
             # Total man hours calculation
-            us.total_man_hours = tasks.filter (task) -> return task.user_story == us.id
-                .map (task) -> 
-                    if(task.man_hour)
-                        return task.man_hour
-                    else 
-                        return 0
-                .reduce (total, manHour) -> 
-                    return total + manHour
+            if(us.id) 
+                us.total_man_hours = tasks.filter (task) -> 
+                        return task.user_story == us.id
+                    .map (task) -> 
+                        if(task.man_hour && typeof task.man_hour == "string")
+                            return parseFloat(task.man_hour)
+                        else if(task.man_hour)
+                            return task.man_hour
+                        else 
+                            return 0
+                    .reduce (total, manHour) -> 
+                        return total + manHour
 
         for taskModel in tasks
             if usTasks[taskModel.user_story]? and usTasks[taskModel.user_story][taskModel.status]?

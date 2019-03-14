@@ -383,12 +383,15 @@ class TaskboardController extends mixOf(taiga.Controller, taiga.PageMixin, taiga
             @scope.taskStatusList = _.sortBy(project.task_statuses, "order")
             @scope.usStatusList = _.sortBy(project.us_statuses, "order")
             @scope.usStatusById = groupBy(project.us_statuses, (e) -> e.id)
-            @scope.getUserStoryManHours = (manHour) -> toManHour(manHour)
+            @scope.getUserStoryManHours = (manHour) -> manHour
             @scope.getTotalManHours = (userstories) -> 
                 totalManHours = 0
                 for us in userstories 
-                    totalManHours += us.total_man_hours
-                return "[" + toManHour(totalManHours) + "]"
+                    if(us.total_man_hours && typeof us.total_man_hours == "string")
+                        totalManHours += parseFloat(us.total_man_hours)
+                    else if(us.total_man_hours)
+                        totalManHours += us.total_man_hours
+                return "[" + totalManHours + " Hr]"
             @scope.issueStatusById = groupBy(project.issue_statuses, (e) -> e.id)
 
             @scope.$emit('project:loaded', project)
@@ -728,16 +731,6 @@ class TaskboardController extends mixOf(taiga.Controller, taiga.PageMixin, taiga
         , {}
 
         @scope.pointsByRole = Object.keys(pointsByRole).map (key) -> return pointsByRole[key]
-    
-    toManHour = (value) ->
-        if(value) 
-            rawHour = parseInt(value)
-            rawMinute = value - rawHour
-            return pad(rawHour, 2) + ":" + pad(rawMinute * 60, 2)
-        return undefined
-
-    pad = (num, size) -> 
-        return ("0000" + num).slice(-size)
 
 module.controller("TaskboardController", TaskboardController)
 
