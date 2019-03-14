@@ -5,7 +5,7 @@ div.taskboard-table(
 )
     div.taskboard-table-header
         div.taskboard-table-inner
-            h2.task-colum-name(translate="TASKBOARD.TABLE.COLUMN")
+            h2.task-colum-name {{'TASKBOARD.TABLE.COLUMN' | translate}} {{getTotalManHours(userstories)}}
             h2.task-colum-name(
                 ng-repeat="s in ::taskStatusList track by s.id"
                 ng-style="{'border-top-color':s.color}"
@@ -62,20 +62,27 @@ div.taskboard-table(
                                 ng-if="us.epics"
                                 epics="us.epics"
                             )
+                        p.man-hour-value(ng-if="us.total_man_hours") 
+                            {{getUserStoryManHours(us.total_man_hours)}} Hr
                     div.us-data
-                        p.status-value(ng-if="usStatusById[us.status]")
-                            span(
-                              ng-style="{'color': usStatusById[us.status]['color']}"
-                              ng-bind="usStatusById[us.status]['name']")
-                        p.points-value
-                            span(ng-bind="us.total_points")
-                            span(ng-if="us.total_points"
-                                 translate="TASKBOARD.TABLE.FIELD_POINTS"
-                            )
-                            span.card-estimation.not-estimated(
-                                ng-if="!us.total_points",
-                                translate="US.NOT_ESTIMATED"
-                            )
+                        //- User story status
+                        //- p.status-value(ng-if="usStatusById[us.status]")
+                        //-     span(
+                        //-       ng-style="{'color': usStatusById[us.status]['color']}"
+                        //-       ng-bind="usStatusById[us.status]['name']")
+                        //- p.points-value
+                            //- Binding the total_points data
+                            //- span(ng-bind="us.total_points")
+                            //- Estimated points text when total_points unavailable
+                            //- span(ng-if="us.total_points"
+                            //-      translate="TASKBOARD.TABLE.FIELD_POINTS"
+                            //- )
+
+                            //- No estimated points text when total_points unavailable
+                            //- span.card-estimation.not-estimated(
+                            //-     ng-if="!us.total_points",
+                            //-     translate="US.NOT_ESTIMATED"
+                            //- )
                         tg-due-date.due-date(
                             due-date="us.due_date"
                             is-closed="us.is_closed"

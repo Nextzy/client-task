@@ -161,9 +161,11 @@ $column-padding: .5rem 1rem;
                 fill: $white;
                 transition: color .3s linear;
             }
-            .status-value,
-            .status-value:hover {
+            .man-hour-value,
+            .man-hour-value:hover {
                 background: $white;
+                color: $gray-light;
+                fill: $gray-light;
                 line-height: 1.75em;
                 padding: 0 .7em;
             }
@@ -239,6 +241,16 @@ $column-padding: .5rem 1rem;
     }
     .status-value {
         @include font-size(small);
+        display: block;
+        margin: .25em 0 0;
+        width: fit-content;
+        span {
+            margin-right: .1rem;
+        }
+    }
+    .man-hour-value {
+        @include font-size(small);
+        color: $gray-light;
         display: block;
         margin: .25em 0 0;
         width: fit-content;

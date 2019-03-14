@@ -157,6 +157,16 @@ class TaskboardTasksService extends taiga.Service
             for status in taskStatusList
                 usTasks[us.id][status.id] = []
 
+            # Total man hours calculation
+            us.total_man_hours = tasks.filter (task) -> return task.user_story == us.id
+                .map (task) -> 
+                    if(task.man_hour)
+                        return task.man_hour
+                    else 
+                        return 0
+                .reduce (total, manHour) -> 
+                    return total + manHour
+
         for taskModel in tasks
             if usTasks[taskModel.user_story]? and usTasks[taskModel.user_story][taskModel.status]?
                 task = {}
@@ -165,13 +175,12 @@ class TaskboardTasksService extends taiga.Service
                 task.model = model
                 task.images = _.filter model.attachments, (it) -> return !!it.thumbnail_card_url
                 task.id = taskModel.id
-                task.man_hour = taskModel.man_hour
                 task.assigned_to = @.usersById[taskModel.assigned_to]
                 task.colorized_tags = _.map task.model.tags, (tag) =>
                     return {name: tag[0], color: tag[1]}
-
+                task.man_hour = taskModel.man_hour
                 usTasks[taskModel.user_story][taskModel.status].push(task)
-
+            
         @.usTasks = Immutable.fromJS(usTasks)
 
 angular.module("taigaKanban").service("tgTaskboardTasks", TaskboardTasksService)
