@@ -5,7 +5,8 @@ div.taskboard-table(
 )
     div.taskboard-table-header
         div.taskboard-table-inner
-            h2.task-colum-name {{'TASKBOARD.TABLE.COLUMN' | translate}} {{getTotalManHours(userstories)}}
+            h2.task-colum-name {{'TASKBOARD.TABLE.COLUMN' | translate}} 
+                span.task-total-man-hours {{getTotalManHours(userstories)}}
             h2.task-colum-name(
                 ng-repeat="s in ::taskStatusList track by s.id"
                 ng-style="{'border-top-color':s.color}"

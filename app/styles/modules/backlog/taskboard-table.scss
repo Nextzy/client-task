@@ -91,6 +91,10 @@ $column-padding: .5rem 1rem;
             @include ellipsis(65%);
         }
     }
+
+    .task-total-man-hours {
+        color: $gray-light;
+    }
 }
 
 .taskboard-table-header {
