@@ -443,9 +443,50 @@ class TaskboardController extends mixOf(taiga.Controller, taiga.PageMixin, taiga
             params.include_attachments = 1
 
         params = _.merge params, @location.search()
+        resource = @rs2
         return @rs.tasks.list(@scope.projectId, @scope.sprintId, null, params).then (tasks) =>
-            @taskboardTasksService.init(@scope.project, @scope.usersById)
-            @taskboardTasksService.set(tasks)
+            promises = tasks.map (task) -> 
+                projectId = task.project
+                return getCustomAttributesPromise(projectId, task, resource)
+                    .then (result) -> getManHourFromTaskPromise(result, resource)
+                    .then (result) -> putManHourToTaskPromise(result, tasks)
+            
+            Promise.all(promises).then () =>
+                @taskboardTasksService.init(@scope.project, @scope.usersById)
+                @taskboardTasksService.set(tasks)
+
+    getCustomAttributesPromise = (projectId, task, resource) -> 
+        return resource.customAttributes.getCustomAttributes(projectId).then (attrs) ->
+            manHourAttr = attrs.data.find (attr) -> attr.name == "man-hour"
+            return { manHourAttr, task }
+
+    getManHourFromTaskPromise = (result, resource) -> 
+        manHourAttr = result.manHourAttr
+        task = result.task
+        if manHourAttr?
+            return resource.customAttributes.getTaskCustomAttributeValues(task.id).then (values) -> 
+                manHourValue = values.data.attributes_values[manHourAttr.id]
+                if manHourValue?
+                    rawHour = parseInt(manHourValue)
+                    rawMinute = manHourValue - rawHour
+                    manHour = pad(rawHour, 2) + ":" + pad(rawMinute * 60, 2)
+                    return { manHour, task }
+                return { "manHour" : undefined, task }
+        else 
+            new Promise((resolve, reject) => 
+                resolve({ "manHour" : undefined, task })
+            )
+
+    putManHourToTaskPromise = (result, tasks) ->
+        new Promise((resolve, reject) => 
+            manHour = result.manHour
+            task = result.task
+            task.man_hour = manHour
+            resolve(task)
+        )
+
+    pad = (num, size) -> 
+        return ("0000" + num).slice(-size)
 
     loadTaskboard: ->
         return @q.all([

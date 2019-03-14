@@ -17,6 +17,8 @@
                 ng-if="vm.item.getIn(['model', 'total_points'])"
             ) {{"COMMON.FIELDS.POINTS" | translate}} {{vm.item.getIn(['model', 'total_points'])}}
 
+    div {{vm.item.get('man_hour')}}
+
     .card-statistics
         tg-due-date.statistic.card-due-date(
             due-date="vm.item.getIn(['model', 'due_date'])"
