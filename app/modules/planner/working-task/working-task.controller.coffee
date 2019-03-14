@@ -24,36 +24,29 @@ class WorkingTaskController
 
     constructor: (@plannerService) ->
         @.assignedTo = Immutable.Map()
-        # @.watching = Immutable.Map()
+        # console.log("Yo")
+        # $('.fc-event').each(() ->
+        #     console.log("Yo")
+        #     $(this).data('event', {
+        #         title: $.trim($(this).text()), 
+        #         stick: true
+        #     })
+
+        #     $(this).draggable({
+        #         zIndex: 999,
+        #         revert: true,    
+        #         revertDuration: 0
+        #     })
+        # )
 
     _setAssignedTo: (workInProgress) ->
-        # epics = workInProgress.get("assignedTo").get("epics")
-        # userStories = workInProgress.get("assignedTo").get("userStories")
         tasks = workInProgress.get("assignedTo").get("tasks")
-        # issues = workInProgress.get("assignedTo").get("issues")
 
-        # @.assignedTo = userStories.concat(tasks)
         @.assignedTo = tasks
-        tasks.forEach((item, index) -> 
-            console.log(JSON.stringify(item))
-            console.log("******************")
-        )
-        # .sort((a, b) => { return })
-        
+
         if @.assignedTo.size > 0
             @.assignedTo = @.assignedTo.sortBy((elem) -> elem.get("project").get("id")).reverse()
             
-        # console.log(JSON.stringify(@.assignedTo))
-    # _setWatching: (workInProgress) ->
-    #     epics = workInProgress.get("watching").get("epics")
-    #     userStories = workInProgress.get("watching").get("userStories")
-    #     tasks = workInProgress.get("watching").get("tasks")
-    #     issues = workInProgress.get("watching").get("issues")
-
-    #     @.watching = userStories.concat(tasks).concat(issues).concat(epics)
-    #     if @.watching.size > 0
-    #         @.watching = @.watching.sortBy((elem) -> elem.get("modified_date")).reverse()
-
     getWorkInProgress: (userId) ->
         return @plannerService.getWorkInProgress(userId).then (workInProgress) =>
             @._setAssignedTo(workInProgress)

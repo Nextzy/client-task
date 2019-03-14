@@ -18,10 +18,28 @@
 ###
 
 UnplanTaskDirective = (navurls, $translate) ->
+
     link = (scope, el, attrs, ctrl) ->
         scope.vm = {}
         scope.vm.duty = scope.duty
         scope.vm.type = scope.type
+
+        getManHour = () -> 
+            return if scope.duty.get("manHour")? 
+                scope.duty.get("manHour")
+            else 
+                "00:30"
+            
+        el.data('event', {
+                title: "Hello",
+                stick: true,
+                duration: getManHour()
+        })
+        # el.draggable({
+        #     zIndex: 999,
+        #     revert: true,     
+        #     revertDuration: 0 
+        # })
 
         scope.vm.getDutyType = () ->
             if scope.vm.duty
@@ -34,8 +52,20 @@ UnplanTaskDirective = (navurls, $translate) ->
                 if scope.vm.duty.get('_name') == "issues"
                     return $translate.instant("COMMON.ISSUE")
 
+        scope.vm.getManHour = () -> getManHour() 
+
         el.on "dragstart", (ev) -> 
-            ev.target.setAttribute("data-duration", "04:00")
+            console.log("Yo")
+
+            
+            # manHour = if scope.duty.get("manHour")? 
+                # scope.duty.get("manHour") 
+            # else 
+                # "00:30"
+            # $('#list-itemtype-ticket [data-duration]').removeAttr('data-duration')
+            # ev.target.setAttribute("data-duration", manHour)
+            # ev.target.setAttribute("data-event", "{'duration': " + manHour + "}")
+            # console.log('ManHour : ' + JSON.stringify(ev.target.parentElement))
 
     return {
         templateUrl: "planner/unplan-task/unplan-task.html"

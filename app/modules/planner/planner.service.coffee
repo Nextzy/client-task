@@ -136,18 +136,18 @@ class PlannerService extends taiga.Service
 
         resource = @rs
         assignedTasksPromise = @rs.tasks.listInAllProjects(params_tasks).then (tasks) -> 
+            tasks = tasks.toJS()
             promises = tasks.map (task) -> 
-                projectId = task.get("project")
+                projectId = task.project
                 return getCustomAttributesPromise(projectId, task, resource)
                     .then (result) -> getManHourFromTaskPromise(result, resource)
                     .then (result) -> putManHourToTaskPromise(result, tasks)
             
             Promise.all(promises).then () =>
+                tasks = Immutable.fromJS(tasks)
                 assignedTo = assignedTo.set("tasks", tasks)
-                console.log("Success Fucking Awesome")
 
         assignedIssuesPromise = @rs.issues.listInAllProjects(params_issues).then (issues) ->
-            console.log('Immutable : ' + Immutable.Iterable.isIterable(issues))
             assignedTo = assignedTo.set("issues", issues)
 
         params_epics = {
@@ -213,7 +213,7 @@ class PlannerService extends taiga.Service
         manHourAttr = result.manHourAttr
         task = result.task
         if manHourAttr?
-            return resource.customAttributes.getTaskCustomAttributeValues(task.get("id")).then (values) -> 
+            return resource.customAttributes.getTaskCustomAttributeValues(task.id).then (values) -> 
                 manHourValue = values.data.attributes_values[manHourAttr.id]
                 if manHourValue?
                     rawHour = parseInt(manHourValue)
@@ -230,18 +230,8 @@ class PlannerService extends taiga.Service
         new Promise((resolve, reject) => 
             manHour = result.manHour
             task = result.task
-            task.set('blocked_note', 'Akexorcist')
-            # task["manHour"] = manHour
-            # index = tasks.findIndex(item => item.id == task.id)
-            # tasks = tasks.update(tasks.findIndex((item) ->
-            #     return item.get("id") == task.id; 
-            # ), (item) ->
-            #     return item.set("manHour", manHour)
-            # )
-
-            # tasks = tasks.setIn([index, "manHour"], manHour)
+            task.manHour = manHour
             resolve(task)
-            # actualTasks.push(task)
         )
 
     pad = (num, size) -> 

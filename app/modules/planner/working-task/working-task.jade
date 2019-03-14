@@ -7,6 +7,9 @@ section.working-task-container
             tg-unplan-task="duty"
             type="working-task"
             tg-repeat="duty in vm.assignedTo"
+            draggable="true"
+            ng-drag="true"
+            class="fc-event"
         )
     .working-task-empty(ng-if="vm.assignedTo != undefined && vm.assignedTo.size === 0")
         p(translate="HOME.EMPTY_WORKING_ON")

@@ -28,3 +28,22 @@
         margin: 2rem 30%;
     }
 }
+
+.fc-event {
+    background: transparent;
+    border: 0;
+    font-size: 1rem;
+}
+.fc-event, 
+.fc-event:hover {
+    color: rgba($black, 1);
+}
+
+.duty-single {
+    cursor: move;
+}
+
+.man-hour {
+    color: rgba($red-light, 1);
+    margin-right: .5rem;
+}
