@@ -107,15 +107,15 @@ nav.menu(
                     tg-svg(svg-icon="icon-meetup")
                     span.helper(translate="PROJECT.SECTION.MEETUP")
 
-            li#nav-calendar
-                a(
-                    tg-nav="project-calendar-home:project=vm.project.get('slug')"
-                    ng-class="{active: vm.active == 'calendar'}"
-                    aria-label="{{'PROJECT.SECTION.CALENDAR' | translate}}"
-                    tabindex="8"
-                )
-                    tg-svg(svg-icon="icon-calendar")
-                    span.helper(translate="PROJECT.SECTION.CALENDAR")
+            //- li#nav-calendar
+            //-     a(
+            //-         tg-nav="project-calendar-home:project=vm.project.get('slug')"
+            //-         ng-class="{active: vm.active == 'calendar'}"
+            //-         aria-label="{{'PROJECT.SECTION.CALENDAR' | translate}}"
+            //-         tabindex="8"
+            //-     )
+            //-         tg-svg(svg-icon="icon-calendar")
+            //-         span.helper(translate="PROJECT.SECTION.CALENDAR")
 
             li#nav-admin(ng-if="vm.project.get('i_am_admin')")
                 a(
