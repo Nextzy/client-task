@@ -159,7 +159,7 @@ class TaskboardTasksService extends taiga.Service
 
             # Total man hours calculation
             if(us.id) 
-                us.total_man_hours = tasks.filter (task) -> 
+                taskManHourList = tasks.filter (task) -> 
                         return task.user_story == us.id
                     .map (task) -> 
                         if(task.man_hour && typeof task.man_hour == "string")
@@ -167,9 +167,13 @@ class TaskboardTasksService extends taiga.Service
                         else if(task.man_hour)
                             return task.man_hour
                         else 
-                            return 0
-                    .reduce (total, manHour) -> 
-                        return total + manHour
+                            return 0.0
+
+                # Don't use reduce, it will cause task in taskboard disapear
+                total = 0
+                for manHour in taskManHourList
+                    total += manHour 
+                us.total_man_hours = total
 
         for taskModel in tasks
             if usTasks[taskModel.user_story]? and usTasks[taskModel.user_story][taskModel.status]?
